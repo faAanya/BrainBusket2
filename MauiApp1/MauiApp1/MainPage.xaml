@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.MainPage"
+             xmlns:panel="clr-namespace:MauiExpansionPanel.Views;assembly=MauiExpansionPanel"
+             xmlns:service="clr-namespace:MauiApp1.DB"
+             xmlns:viewmodel ="clr-namespace:MauiApp1.MVVM"
+             xmlns:cp="https://trungnt2910.github.io/schemas/maui/2022/colorpicker"
+             x:DataType="viewmodel:MainViewModel"
+             Title="BrainBusket">
+    <!--<Grid RowDefinitions="100, Auto, *"
+          ColumnDefinitions=".75*, .25*"
+           RowSpacing = "10" 
+ColumnSpacing ="10">
+
+    <Image Grid.ColumnSpan="2"
+               Source =" "
+               BackgroundColor ="Orange"
+              />
+
+
+        <Entry Placeholder="Продукт"
+               Text="{Binding ProductName}"
+               Grid.Row="1"/>
+        
+        <Button Text="Добавить"
+                Command="{Binding AddCommand}"
+                Grid.Row="1"
+                Grid.Column="1"/>
+
+        <CollectionView x:Name="productView" Grid.Row=" 2" Grid.ColumnSpan="2"
+                        ItemsSource="{Binding Items}"
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type x:String}">
+                   
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Удалить" 
+                                           BackgroundColor="Red"
+                                           Command="{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=DeleteCommand}"
+                                           CommandParameter="{Binding .}"/>
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                    <Grid Padding="0,5">
+                        <Frame>
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=TapCommand}"
+ CommandParameter="{Binding .}"/>
+
+                                </Frame.GestureRecognizers>
+                            <Label Text="{Binding .}"
+                                   FontSize="24"/>
+                        </Frame>
+                        
+                    </Grid>
+                    </SwipeView>
+                </DataTemplate>
+                
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+      
+    </Grid>-->
+
+
+    <Grid RowDefinitions="Auto, *">
+      
+        <Image Grid.Row="0" Grid.Column="0"
+            Source =" "
+            BackgroundColor ="{Binding OperationCategory.CategoryColor}"/>
+     
+    <Label Grid.Row="0" Text= "Продукты" TextColor="White" FontSize="30" FontAttributes="Bold" HorizontalTextAlignment="Center" Padding="10"/>
+
+        <ScrollView Grid.Column="0" Grid.Row="1">
+            <VerticalStackLayout>
+                <CollectionView Grid.Row="1" ItemsSource="{Binding Items}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout ItemSpacing="10" Orientation="Vertical"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="service:Product">
+                                <SwipeView>
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItem Text="Куплено" 
+                        BackgroundColor="Red"
+                        Command="{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=SetProductStateCommand}"
+                        CommandParameter="{Binding .}"/>
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+                                    <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="*, Auto" RowSpacing="5" Padding="5">
+                                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Name}" FontAttributes="Bold"/>
+                                        <Label Grid.Row="1" Grid.Column="0" Text="{Binding Amount, StringFormat= 'Количество: {0}'}" FontAttributes="Bold"/>
+                                      
+                                        <Button Grid.Row="0" Grid.Column="1"  Text="Редактировать"  Padding="0" HeightRequest="25" FontSize="12" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path= SetOperatingProductCommand}" 
+                                     CommandParameter="{Binding .}"/>
+                                    <Button Grid.Row="1" Grid.Column="1" Text="Удалить"  Padding="0" HeightRequest="25" FontSize="12"
+Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path= DeleteProductCommand}" 
+CommandParameter="{Binding Id}"/>
+
+                                </Grid>
+                                </SwipeView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        <!--<CollectionView.EmptyView>
+                            <ContentView>
+                                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Label Text="Добавьте новые продукты!" FontSize="24" FontAttributes="Bold"/>
+                                </VerticalStackLayout>
+                            </ContentView>
+                        </CollectionView.EmptyView>-->
+                    </CollectionView>
+
+                    <CollectionView ItemsSource="{Binding BoughtItems}" BackgroundColor="DarkGray">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout ItemSpacing="10" Orientation="Vertical"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="service:Product">
+                            
+                            <SwipeView>
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItem Text="Вернуть" 
+         BackgroundColor="Red"
+         Command="{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=SetProductStateCommand}"
+         CommandParameter="{Binding .}"
+                        
+                                                       />
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+                                    <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="*, Auto" RowSpacing="5" Padding="5">
+                                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Name}" TextColor="Gray" FontAttributes="Bold" TextDecorations="Strikethrough"/>
+                                        <Label Grid.Row="1" Grid.Column="0" Text="{Binding Amount, StringFormat= 'Количество: {0}'}" FontAttributes="Bold"/>
+                                       
+                                </Grid>
+                                </SwipeView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+        <VerticalStackLayout Grid.Row="1" VerticalOptions="End">
+                    <BoxView Color="#FFA14A" HeightRequest="1"/>
+                    <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="*, Auto" Padding="10" RowSpacing="10" ColumnSpacing ="10" >
+                        <VerticalStackLayout Grid.Row="0" Grid.Column="0">
+                            <Label Text="Название продукта"  FontSize="16"/>
+                            <Entry Text="{Binding OperationProduct.Name}" Placeholder="Название" Margin="0" FontSize="16"/>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Row="0" Grid.Column="1">
+                            <Label Text="Количество"  FontSize="16"/>
+                            <Entry Text="{Binding OperationProduct.Amount}" Placeholder="Количество" Margin="0" Keyboard="Numeric" FontSize="16"/>
+
+                        </VerticalStackLayout>
+                        <Button Grid.Row="1" Grid.ColumnSpan="2" Text="+" BackgroundColor="#FFA14A" CornerRadius="180" WidthRequest="50" HeightRequest="50" FontSize="30" Command="{Binding SaveProductCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                             Binding="{Binding OperationProduct.Id}"
+                             Value="0">
+                                    <Setter Property="Text" Value="+"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </Grid>
+                </VerticalStackLayout>
+       </Grid>
+
+</ContentPage>

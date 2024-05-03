@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.DetailPage"
+             xmlns:viewmodel="clr-namespace:MauiApp1.MVVM"
+             x:DataType="viewmodel:DetailViewModel"
+             Title="DetailPage">
+    
+    
+    <!--<FlexLayout Direction="Column" Padding="10">
+        <VerticalStackLayout>
+        <Button Text = "Вернуться"
+                 Clicked="saveButton_Clicked"
+                Command="{Binding GoBackCommand}"/>
+        <Label Text="{Binding Text}"
+            FontSize="25"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Entry x:Name="descriptionEntryField" Placeholder="Описание"/>
+        <Entry x:Name="categoryEntryField" Placeholder="Категория"/>
+            <Entry x:Name="amountEntryField" Placeholder="Количество"/>
+        </VerticalStackLayout>
+        <ListView x:Name="listView" FlexLayout.Grow="1" HasUnevenRows="True" ItemTapped ="listView_ItemTapped">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="5">
+                        <Label Text="{Binding Text}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Text= "{Binding ProductName}"/>
+                            <Label Grid.Column="2" Text= "{Binding Description}"/>
+                            <Label Grid.Column="3" Text= "{Binding Category}"  />
+                            <Label Grid.Column="5" Text= "{Binding Amount}"  />
+                        </Grid>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>       
+                     
+    </ListView>
+    </FlexLayout>-->
+</ContentPage>
