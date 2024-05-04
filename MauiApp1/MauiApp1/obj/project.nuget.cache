@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BrsOQ3ZpFRbhP9pYR1OhdIo7aT6lPpxK6XyZV+HoDVufnObBu1tg/dC4WH50sc/w8+biUcO5nSQKY5utPxo4RQ==",
+  "dgSpecHash": "xIHt7r03W0ITl9Ce3SBsT/q10ggv+JGdf3Tfd9dBfGMXKMH8UstaQNn7Jm0QcNZm+gywWY52oAV6VvWSXzaNcA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Полина Кирпичёнок\\source\\repos\\MauiApp1\\MauiApp1\\MauiApp1.csproj",
+  "projectFilePath": "C:\\GitHub\\BrainBusket2\\MauiApp1\\MauiApp1\\MauiApp1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Полина Кирпичёнок\\.nuget\\packages\\colorpicker.maui\\1.1.0-dev.3\\colorpicker.maui.1.1.0-dev.3.nupkg.sha512",
     "C:\\Users\\Полина Кирпичёнок\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.2\\communitytoolkit.mvvm.8.2.2.nupkg.sha512",

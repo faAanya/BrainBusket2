@@ -12,7 +12,6 @@ namespace MauiApp1
            
             BindingContext = mainViewModel;
             viewModel = mainViewModel;
-            
         }
 
 
@@ -23,7 +22,12 @@ namespace MauiApp1
             await viewModel.LoadProductsAsync();
         }
 
-     
+        private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+        {
+            await Shell.Current.GoToAsync(nameof(DetailPage));
+            //viewModel.TapCommand();
+        }
+    
     }
 
 }

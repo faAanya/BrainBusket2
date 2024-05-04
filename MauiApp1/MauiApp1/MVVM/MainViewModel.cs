@@ -2,18 +2,47 @@
 using CommunityToolkit.Mvvm.Input;
 using MauiApp1.DB;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 
 namespace MauiApp1.MVVM
 {
 
-    public partial class MainViewModel : ObservableObject
+    public partial class MainViewModel : ObservableObject, INotifyPropertyChanged
     {
+
+        public MainViewModel viewModel;
+
+        //public Category _category;
+        //public Category SelectedCategory
+        //{
+        //    get { return _category; }
+        //    set
+        //    {
+        //        _category = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
+
+        //public event PropertyChangedEventHandler? PropertyChanged;
+
+        //void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        //{
+        //    if (PropertyChanged == null)
+        //    {
+        //        return;
+        //    }
+        //    PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        //}
+
+
+
         private readonly LocalDBService DBService;
         public MainViewModel(LocalDBService db)
         {
-            //items = new ObservableCollection<Product>();
             DBService = db;
         }
 
@@ -25,7 +54,20 @@ namespace MauiApp1.MVVM
         private ObservableCollection<Product> boughtItems = new();
 
         [ObservableProperty]
-        private ObservableCollection<Category> categories = new();
+        private ObservableCollection<Category> categories = new()
+        {
+            new Category()
+            {
+                CategoryId = 0,
+                CategoryName = "Овощи",
+                CategoryColor = new Color(255,0,0)
+            },new Category()
+            {
+            CategoryId = 1,
+                CategoryName = "Фрукты",
+                CategoryColor = new Color(41,2,169)
+            }
+        };
 
 
         [ObservableProperty]
@@ -39,6 +81,9 @@ namespace MauiApp1.MVVM
 
         [ObservableProperty]
         private string busyText;
+
+
+       
 
 
         [RelayCommand]
@@ -72,10 +117,13 @@ namespace MauiApp1.MVVM
 
         public async Task LoadProductsAsync()
         {
+            
             await ExecuteAsync(async() =>
             {
                 var products = await DBService.GetAllAsync<Product>();
 
+
+                
                 if (products is not null && products.Any())
                 {
                     Items ??= new ObservableCollection<Product>();
@@ -85,19 +133,23 @@ namespace MauiApp1.MVVM
 
                 foreach (var product in products)
                 {   
-                    if(product.IsBought == true)
+                   
+                    if(product.IsBought == true && BoughtItems.Contains(product))
+                    
                     {
                         Items.Remove(product);
                         BoughtItems.Add(product);
                     }
-                    else
+                    else if (!product.IsBought == true && Items.Contains(product))
                     {
                         Items.Add(product);
                     }
+                    else
+                    {
+                        continue;
+                    }
                    
                 }
-
-
             }, "Fetchnig products");
         }
 
@@ -107,6 +159,7 @@ namespace MauiApp1.MVVM
 
 
         [RelayCommand]
+        
         public async Task SaveProductAsync()
         {
             if (OperationProduct is null)
@@ -146,6 +199,7 @@ namespace MauiApp1.MVVM
         }
 
 
+
         [RelayCommand]
         private async Task DeleteProductAsync(int id)
         {
@@ -153,8 +207,19 @@ namespace MauiApp1.MVVM
             {
                 if (await DBService.DeleteByKeyItemAsunc<Product>(id))
                 {
-                    var product = Items.FirstOrDefault(x => x.Id == id);
-                    Items.Remove(product);
+                    var unBoughtProduct = Items.FirstOrDefault(x => x.Id == id);
+                    var BoughtProduct = BoughtItems.FirstOrDefault(x => x.Id == id);
+
+
+                    if (Items.Contains(unBoughtProduct) && !BoughtItems.Contains(unBoughtProduct))
+                    {
+                        
+                        Items.Remove(unBoughtProduct);
+                    }
+                    else if(!Items.Contains(BoughtProduct) && BoughtItems.Contains(BoughtProduct))
+                    {
+                        BoughtItems.Remove(BoughtProduct);
+                    }  
                 }
                 else
                 {
@@ -214,12 +279,7 @@ namespace MauiApp1.MVVM
             if (OperationCategory is null)
                 return;
 
-            //var (isValid, errorMessage) = OperationCategory.Validate();
-            //if (!isValid)
-            //{
-            //    await Shell.Current.DisplayAlert("Ошибка", errorMessage, "Ок");
-            //    return;
-            //}
+
 
 
             var busyText = OperationCategory.CategoryId == 0 ? "Creating Product" : "Updating product";
@@ -267,7 +327,13 @@ namespace MauiApp1.MVVM
 
 
         }
-
+        public async void TapCommand()
+        {
+   
+            OperationProduct.Description = await Shell.Current.DisplayPromptAsync(OperationProduct.Name, "Описание", "Ok", null, null);
+            SaveProductAsync();
+            
+        }
        
 
     }

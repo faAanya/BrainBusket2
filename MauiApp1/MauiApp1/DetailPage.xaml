@@ -7,41 +7,39 @@
              Title="DetailPage">
     
     
-    <!--<FlexLayout Direction="Column" Padding="10">
+    <FlexLayout Direction="Column" Padding="10">
         <VerticalStackLayout>
         <Button Text = "Вернуться"
-                 Clicked="saveButton_Clicked"
-                Command="{Binding GoBackCommand}"/>
-        <Label Text="{Binding Text}"
+              Clicked="Back_Button_Clicked"
+               />
+            <Label Text="Meow"
             FontSize="25"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <Entry x:Name="descriptionEntryField" Placeholder="Описание"/>
-        <Entry x:Name="categoryEntryField" Placeholder="Категория"/>
-            <Entry x:Name="amountEntryField" Placeholder="Количество"/>
+            <Entry Text="{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=OperationProduct.Description}" x:Name="descriptionEntryField" Placeholder="Описание"/> 
+            <Entry Text="{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=OperationProduct.Amount}" Placeholder="Описание"/>
+            <Entry  x:Name="categoryEntryField" Placeholder="Категория"/>
         </VerticalStackLayout>
-        <ListView x:Name="listView" FlexLayout.Grow="1" HasUnevenRows="True" ItemTapped ="listView_ItemTapped">
+        <ListView x:Name="listView" FlexLayout.Grow="1" HasUnevenRows="True">
         <ListView.ItemTemplate>
             <DataTemplate>
                     <ViewCell>
                         <StackLayout Padding="5">
-                        <Label Text="{Binding Text}"/>
+                            <Label Text="Meow"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text= "{Binding ProductName}"/>
-                            <Label Grid.Column="2" Text= "{Binding Description}"/>
-                            <Label Grid.Column="3" Text= "{Binding Category}"  />
-                            <Label Grid.Column="5" Text= "{Binding Amount}"  />
-                        </Grid>
+                                <Label Grid.Column="0" Text= "{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=OperationProduct.Name}"/>
+                                <Label Grid.Column="2" Text= "{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=OperationProduct.Description}"/>
+                            </Grid>
                     </StackLayout>
                 </ViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>       
                      
     </ListView>
-    </FlexLayout>-->
+    </FlexLayout>
 </ContentPage>
