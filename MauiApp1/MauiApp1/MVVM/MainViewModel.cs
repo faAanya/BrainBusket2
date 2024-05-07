@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiApp1.DB;
 using System.Collections.ObjectModel;
@@ -15,59 +16,72 @@ namespace MauiApp1.MVVM
 
         public MainViewModel viewModel;
 
-        //public Category _category;
-        //public Category SelectedCategory
-        //{
-        //    get { return _category; }
-        //    set
-        //    {
-        //        _category = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
-        //public event PropertyChangedEventHandler? PropertyChanged;
-
-        //void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        //{
-        //    if (PropertyChanged == null)
-        //    {
-        //        return;
-        //    }
-        //    PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        //}
-
-
-
+       
         private readonly LocalDBService DBService;
         public MainViewModel(LocalDBService db)
         {
             DBService = db;
+
+            myBorderBackgroundColor = Color.FromArgb("#FFFF");
+
+            IsLoaded = true;
         }
+
+        [ObservableProperty]
+        public Color myBorderBackgroundColor;
 
 
         [ObservableProperty]
         private ObservableCollection<Product> items = new();
-        
+
+      
+
         [ObservableProperty]
         private ObservableCollection<Product> boughtItems = new();
 
         [ObservableProperty]
         private ObservableCollection<Category> categories = new()
         {
+            
             new Category()
             {
                 CategoryId = 0,
                 CategoryName = "Овощи",
-                CategoryColor = new Color(255,0,0)
+                CategoryColor = Color.FromRgba("#8BB98E")
             },new Category()
             {
             CategoryId = 1,
                 CategoryName = "Фрукты",
-                CategoryColor = new Color(41,2,169)
+                CategoryColor = Color.FromRgba("#fffff")
+            },new Category()
+            {
+            CategoryId = 2,
+                CategoryName = "Выпечка",
+                CategoryColor = Color.FromRgba("#FFCF88")
+            },new Category()
+            { 
+             CategoryId = 3,
+                CategoryName = "Мясо и рыба",
+                CategoryColor = Color.FromRgba("#FF7979")
+            },new Category()
+            {
+             CategoryId = 4,
+                CategoryName = "Молочные изделия",
+                CategoryColor = Color.FromRgba("#FF7979")
+            },new Category()
+            {
+             CategoryId = 5,
+                CategoryName = "Быт и гигиена",
+                CategoryColor = Color.FromRgba("#FF8BCA")
+            },new Category()
+            {
+             CategoryId = 6,
+                CategoryName = "Сладости",
+                CategoryColor = Color.FromRgba("#B88BB9")
             }
         };
+
+
 
 
         [ObservableProperty]
@@ -82,8 +96,11 @@ namespace MauiApp1.MVVM
         [ObservableProperty]
         private string busyText;
 
+        [ObservableProperty]
+        private bool isLoaded = true;
 
-       
+
+
 
 
         [RelayCommand]
@@ -117,13 +134,11 @@ namespace MauiApp1.MVVM
 
         public async Task LoadProductsAsync()
         {
-            
+           
             await ExecuteAsync(async() =>
             {
                 var products = await DBService.GetAllAsync<Product>();
 
-
-                
                 if (products is not null && products.Any())
                 {
                     Items ??= new ObservableCollection<Product>();
@@ -134,13 +149,13 @@ namespace MauiApp1.MVVM
                 foreach (var product in products)
                 {   
                    
-                    if(product.IsBought == true && BoughtItems.Contains(product))
+                    if(product.IsBought == true  && IsLoaded/*&& BoughtItems.Contains(product)*/)
                     
                     {
                         Items.Remove(product);
                         BoughtItems.Add(product);
                     }
-                    else if (!product.IsBought == true && Items.Contains(product))
+                    else if (!product.IsBought == true && IsLoaded/*&& Items.Contains(product)*/)
                     {
                         Items.Add(product);
                     }
@@ -150,6 +165,7 @@ namespace MauiApp1.MVVM
                     }
                    
                 }
+                IsLoaded = false;
             }, "Fetchnig products");
         }
 
@@ -171,7 +187,6 @@ namespace MauiApp1.MVVM
                 await Shell.Current.DisplayAlert("Ошибка", errorMessage, "Ок");
                 return;
             }
-
 
             var busyText = OperationProduct.Id == 0 ? "Creating Product" : "Updating product";
             await ExecuteAsync(async () =>
@@ -213,7 +228,6 @@ namespace MauiApp1.MVVM
 
                     if (Items.Contains(unBoughtProduct) && !BoughtItems.Contains(unBoughtProduct))
                     {
-                        
                         Items.Remove(unBoughtProduct);
                     }
                     else if(!Items.Contains(BoughtProduct) && BoughtItems.Contains(BoughtProduct))
@@ -246,87 +260,87 @@ namespace MauiApp1.MVVM
             }
         }
 
-        public async Task LoadCategoriesAsync()
-        {
-            await ExecuteAsync(async () =>
-            {
-                var categories = await DBService.GetAllAsync<Category>();
+        //public async Task LoadCategoriesAsync()
+        //{
+        //    await ExecuteAsync(async () =>
+        //    {
+        //        var categories = await DBService.GetAllAsync<Category>();
 
-                if (categories is not null && categories.Any())
-                {
-                    Categories ??= new ObservableCollection<Category>();
+        //        if (categories is not null && categories.Any())
+        //        {
+        //            Categories ??= new ObservableCollection<Category>();
                  
-                }
+        //        }
 
 
-                foreach (var category in categories)
-                {
-                    Categories.Add(category);
-                }
+        //        foreach (var category in categories)
+        //        {
+        //            Categories.Add(category);
+        //        }
 
 
-            }, "Fetchnig products");
-        }
+        //    }, "Fetchnig products");
+        //}
 
-        [RelayCommand]
-        private void SetOperatingCategory(Category? category) => OperationCategory = category ?? new();
-
-
-
-        [RelayCommand]
-        public async Task SaveCategoryAsync()
-        {
-            if (OperationCategory is null)
-                return;
+        //[RelayCommand]
+        //private void SetOperatingCategory(Category? category) => OperationCategory = category ?? new();
 
 
 
-
-            var busyText = OperationCategory.CategoryId == 0 ? "Creating Product" : "Updating product";
-            await ExecuteAsync(async () =>
-            {
-                if (OperationCategory.CategoryId == 0)
-                {
-                    await DBService.AddItemAsunc<Category>(OperationCategory);
-                    Categories.Add(OperationCategory);
-                }
-                else
-                {
-                    await DBService.UpdateItemAsunc<Category>(OperationCategory);
-
-
-                    var categoryCopy = OperationCategory.Clone();
-                    var index = Categories.IndexOf(OperationCategory);
-                    Categories.RemoveAt(index);
-
-                    Categories.Insert(index, categoryCopy);
-                }
-                OperationCategory = new();
-                SetOperatingCategoryCommand.Execute(new());
-            }, busyText);
-
-        }
-
-
-        [RelayCommand]
-        private async Task DeleteCategoryAsync(int id)
-        {
-            await ExecuteAsync(async () =>
-            {
-                if (await DBService.DeleteByKeyItemAsunc<Category>(id))
-                {
-                    var category = Categories.FirstOrDefault(x => x.CategoryId == id);
-                    Categories.Remove(category);
-                }
-                else
-                {
-                    await Shell.Current.DisplayAlert("Delete Error", "Product was not deleted", "Ok");
-                }
-            }, "Deleting product");
+        //[RelayCommand]
+        //public async Task SaveCategoryAsync()
+        //{
+        //    if (OperationCategory is null)
+        //        return;
 
 
 
-        }
+
+        //    var busyText = OperationCategory.CategoryId == 0 ? "Creating Product" : "Updating product";
+        //    await ExecuteAsync(async () =>
+        //    {
+        //        if (OperationCategory.CategoryId == 0)
+        //        {
+        //            await DBService.AddItemAsunc<Category>(OperationCategory);
+        //            Categories.Add(OperationCategory);
+        //        }
+        //        else
+        //        {
+        //            await DBService.UpdateItemAsunc<Category>(OperationCategory);
+
+
+        //            var categoryCopy = OperationCategory.Clone();
+        //            var index = Categories.IndexOf(OperationCategory);
+        //            Categories.RemoveAt(index);
+
+        //            Categories.Insert(index, categoryCopy);
+        //        }
+        //        OperationCategory = new();
+        //        SetOperatingCategoryCommand.Execute(new());
+        //    }, busyText);
+
+        //}
+
+
+        //[RelayCommand]
+        //private async Task DeleteCategoryAsync(int id)
+        //{
+        //    await ExecuteAsync(async () =>
+        //    {
+        //        if (await DBService.DeleteByKeyItemAsunc<Category>(id))
+        //        {
+        //            var category = Categories.FirstOrDefault(x => x.CategoryId == id);
+        //            Categories.Remove(category);
+        //        }
+        //        else
+        //        {
+        //            await Shell.Current.DisplayAlert("Delete Error", "Product was not deleted", "Ok");
+        //        }
+        //    }, "Deleting product");
+
+
+
+        //}
         public async void TapCommand()
         {
    
@@ -334,7 +348,7 @@ namespace MauiApp1.MVVM
             SaveProductAsync();
             
         }
-       
-
     }
+
+
 }

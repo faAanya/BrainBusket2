@@ -5,12 +5,14 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:service="clr-namespace:MauiApp1.DB"
              xmlns:viewmodel ="clr-namespace:MauiApp1.MVVM"
+             xmlns:converters ="clr-namespace:MauiApp1.MVVM"
              xmlns:cp="https://trungnt2910.github.io/schemas/maui/2022/colorpicker"
-             
              x:DataType="viewmodel:MainViewModel"
              Title="BrainBusket">
 
-
+    <ContentPage.Resources>
+        <converters:ColorConverter x:Key="colConverter" />
+    </ContentPage.Resources>
 
     <Grid>
        
@@ -44,6 +46,7 @@
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="service:Product">
+                                
                                 <SwipeView>
                                     <SwipeView.RightItems>
                                         <SwipeItems>
@@ -54,7 +57,9 @@
                                         </SwipeItems>
                                     </SwipeView.RightItems>
                                     <Grid>
-                                        <Border  StrokeThickness="4" >
+                                        <Border StrokeThickness="3" Stroke="{Binding ProductCategoryColor, Converter={StaticResource colConverter}}">
+                                      
+
                                             <Border.StrokeShape>
                                                 <RoundRectangle CornerRadius="10,10,10,10" />
                                             </Border.StrokeShape>
@@ -74,7 +79,8 @@
                                                         <!-- Первая часть для кнопки "Изменить" -->
                                                         <ColumnDefinition Width="*"/>
                                                         <!-- Вторая часть для кнопки "Удалить" -->
-                                                    </Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
 
                                                     <Button Grid.Column="0" Text="Изменить" Padding="0" HeightRequest="35" FontSize="12" Margin="0,0,7,0" WidthRequest="80" 
         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path= SetOperatingProductCommand}" 
@@ -83,7 +89,9 @@
                                                     <Button Grid.Column="1" Text="Удалить" Padding="0" HeightRequest="35" FontSize="12" WidthRequest="80"
         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path= DeleteProductCommand}" 
         CommandParameter="{Binding Id}"/>
-                                                </Grid>
+                                                       
+
+                                                    </Grid>
                                             </Grid>
                                         </Frame>
                                         </Border>
@@ -154,11 +162,10 @@ CommandParameter="{Binding Id}"/>
                     <VerticalStackLayout Grid.Row="0" Grid.Column="1">
                       
                         <Label x:Name="header" Text="Категория"  />
-                        <Picker ItemsSource="{Binding Categories}" ItemDisplayBinding="{Binding CategoryName}">
-                             <!--SelectedIndexChanged="CategorySelected"
-SelectedItem="{Binding SelectedCategory}"-->
+                        <Picker ItemsSource="{Binding Categories}" ItemDisplayBinding="{Binding CategoryName}" SelectedIndexChanged="OnPickerSelectedIndexChanged">
+                            
                         </Picker>
-                      
+                        <Label x:Name="lab"/>
                     </VerticalStackLayout>
                 
                     <Button Grid.Row="0" Grid.Column="2" Text="+" BackgroundColor="#FFA14A" CornerRadius="180" WidthRequest="50" HeightRequest="50" Padding="0" FontSize="30" Command="{Binding SaveProductCommand}">

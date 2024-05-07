@@ -12,7 +12,7 @@
         <Button Text = "Вернуться"
               Clicked="Back_Button_Clicked"
                />
-            <Label Text="Meow"
+            <Label Text="{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=OperationProduct.Name}"
             FontSize="25"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />

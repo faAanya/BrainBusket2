@@ -11,16 +11,14 @@ namespace MauiApp1.DB
         public int Id { get; set; }
 
         [Column("product_name")]
-
         public string? Name { get; set; }
 
         [Column("product_state")]
 
         public bool IsBought { get; set; } = false;
 
-
-        [Column("product_category")]
-        public Color? ProductCategoryColor { get; set; }
+        [Column("product_category_color")]
+        public string? ProductCategoryColor { get; set; } = "#cfcdc8";
 
         [Column("product_description")]
         public string? Description { get; set; }

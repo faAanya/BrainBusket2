@@ -1,5 +1,8 @@
-﻿using MauiApp1.DB;
+﻿
+using MauiApp1.DB;
 using MauiApp1.MVVM;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics.Converters;
 
 namespace MauiApp1
 {
@@ -18,7 +21,7 @@ namespace MauiApp1
         protected async override void OnAppearing()
         {
             base.OnAppearing();
-
+           
             await viewModel.LoadProductsAsync();
         }
 
@@ -27,7 +30,22 @@ namespace MauiApp1
             await Shell.Current.GoToAsync(nameof(DetailPage));
             //viewModel.TapCommand();
         }
-    
+
+        void OnPickerSelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+           var picker = (Picker)sender;
+            int selectedIndex = picker.SelectedIndex;
+
+            if (selectedIndex != -1)
+            {
+              
+                ColorTypeConverter converter = new ColorTypeConverter();
+
+                viewModel.OperationProduct.ProductCategoryColor = (converter.ConvertToString(viewModel.Categories[selectedIndex].CategoryColor));
+                
+            }
+        }
     }
 
 }
