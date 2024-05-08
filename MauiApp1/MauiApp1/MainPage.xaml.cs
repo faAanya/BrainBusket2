@@ -1,8 +1,6 @@
-﻿
-using MauiApp1.DB;
-using MauiApp1.MVVM;
-using Microsoft.Maui.Controls;
+﻿using MauiApp1.MVVM;
 using Microsoft.Maui.Graphics.Converters;
+using System;
 
 namespace MauiApp1
 {
@@ -15,14 +13,19 @@ namespace MauiApp1
            
             BindingContext = mainViewModel;
             viewModel = mainViewModel;
+
+            picker.SelectedItem = viewModel.Categories[viewModel.Categories.Count - 1];
+
+         
         }
 
-
+    
         protected async override void OnAppearing()
         {
             base.OnAppearing();
            
             await viewModel.LoadProductsAsync();
+            
         }
 
         private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
@@ -34,17 +37,29 @@ namespace MauiApp1
         void OnPickerSelectedIndexChanged(object sender, EventArgs e)
         {
             
-           var picker = (Picker)sender;
+         
             int selectedIndex = picker.SelectedIndex;
-
+            picker.SelectedItem = viewModel.Categories[selectedIndex];
             if (selectedIndex != -1)
             {
               
                 ColorTypeConverter converter = new ColorTypeConverter();
 
                 viewModel.OperationProduct.ProductCategoryColor = (converter.ConvertToString(viewModel.Categories[selectedIndex].CategoryColor));
+                viewModel.OperationProduct.ProductCategoryId = selectedIndex;
                 
             }
+          
+            
+        }
+
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+            ColorTypeConverter converter = new ColorTypeConverter();
+
+            picker.SelectedItem = viewModel.Categories[picker.SelectedIndex];
+            viewModel.OperationProduct.ProductCategoryColor = (converter.ConvertToString(viewModel.Categories[picker.SelectedIndex].CategoryColor));
+            viewModel.OperationProduct.ProductCategoryId = picker.SelectedIndex;
         }
     }
 

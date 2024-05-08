@@ -79,11 +79,17 @@ namespace MauiApp1.MVVM
                 CategoryName = "Сладости",
                 CategoryColor = Color.FromRgba("#B88BB9")
             }
+            ,new Category()
+            {
+             CategoryId = 7,
+                CategoryName = "Другое",
+                CategoryColor = Color.FromRgba("#cfcdc8")
+            }
         };
 
 
 
-
+     
         [ObservableProperty]
         private Product operationProduct = new();
 

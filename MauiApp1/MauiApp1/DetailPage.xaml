@@ -16,9 +16,19 @@
             FontSize="25"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+            <Entry Text="{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=OperationProduct.Name}" x:Name="nameEntryField" Placeholder="Имя"/>
             <Entry Text="{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=OperationProduct.Description}" x:Name="descriptionEntryField" Placeholder="Описание"/> 
-            <Entry Text="{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=OperationProduct.Amount}" Placeholder="Описание"/>
-            <Entry  x:Name="categoryEntryField" Placeholder="Категория"/>
+            <Entry Text="{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=OperationProduct.Amount}" Placeholder="Количество" Keyboard="Numeric"/>
+            <VerticalStackLayout Grid.Row="0" Grid.Column="1">
+
+                <Label x:Name="header" Text="Категория"  />
+                <Picker ItemsSource="{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=Categories}" 
+                        ItemDisplayBinding="{Binding CategoryName}"
+                        SelectedIndexChanged="OnPickerSelectedIndexChanged" x:Name="picker">
+
+                </Picker>
+                <Label x:Name="lab"/>
+            </VerticalStackLayout>
         </VerticalStackLayout>
         <ListView x:Name="listView" FlexLayout.Grow="1" HasUnevenRows="True">
         <ListView.ItemTemplate>
