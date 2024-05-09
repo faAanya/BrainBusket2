@@ -30,26 +30,7 @@
                 <Label x:Name="lab"/>
             </VerticalStackLayout>
         </VerticalStackLayout>
-        <ListView x:Name="listView" FlexLayout.Grow="1" HasUnevenRows="True">
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Padding="5">
-                            <Label Text="Meow"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                
-                            </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Text= "{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=OperationProduct.Name}"/>
-                                <Label Grid.Column="2" Text= "{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=OperationProduct.Description}"/>
-                            </Grid>
-                    </StackLayout>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>       
-                     
-    </ListView>
+          
+    
     </FlexLayout>
 </ContentPage>
