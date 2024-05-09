@@ -45,6 +45,7 @@
             <!--<Label Text="{Binding Source={RelativeSource AncestorType= {x:Type viewmodel:MainViewModel}}, Path=Items.Count}"/>-->
             <ScrollView Grid.Row="0" Margin="10,70,10,100" Grid.RowSpan="2">
                 <VerticalStackLayout>
+                    <Button Text="Сортировать" Command="{Binding SortItemsCommand}"></Button>
                     <CollectionView Grid.Row="1" ItemsSource="{Binding Items}">
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout ItemSpacing="5" Orientation="Vertical"/>

@@ -61,6 +61,8 @@ namespace MauiApp1
             viewModel.OperationProduct.ProductCategoryColor = (converter.ConvertToString(viewModel.Categories[picker.SelectedIndex].CategoryColor));
             viewModel.OperationProduct.ProductCategoryId = picker.SelectedIndex;
         }
+
+       
     }
 
 }

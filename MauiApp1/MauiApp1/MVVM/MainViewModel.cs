@@ -106,7 +106,17 @@ namespace MauiApp1.MVVM
         private bool isLoaded = true;
 
 
+        [RelayCommand]
+        private void SortItems()
+        {
+            var items2 = Items.OrderBy(x => x.ProductCategoryId);
+            Items = new ObservableCollection<Product>();
 
+            foreach (var item in items2)
+            {
+                Items.Add(item);
+            }
+        }
 
 
         [RelayCommand]
@@ -170,6 +180,10 @@ namespace MauiApp1.MVVM
                         continue;
                     }
                    
+                }
+                if (IsLoaded)
+                {
+                    SortItems();
                 }
                 IsLoaded = false;
             }, "Fetchnig products");
